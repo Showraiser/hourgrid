@@ -1,0 +1,17 @@
+node_modules/
+.next/
+out/
+cache/
+broadcast/
+contracts/deployments/31337.json
+__pycache__/
+*.pyc
+.venv/
+*.db
+*.db-shm
+*.db-wal
+.env
+.env.local
+.pytest_cache/
+next-env.d.ts
+*.tsbuildinfo
