@@ -1,5 +1,5 @@
 // Typed client for the HourGrid FastAPI backend.
-export const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+export const API = process.env.NEXT_PUBLIC_API_URL || "https://hourgrid-9wfp.onrender.com";
 
 async function req<T>(path: string, init?: RequestInit): Promise<T> {
   const r = await fetch(`${API}${path}`, {
