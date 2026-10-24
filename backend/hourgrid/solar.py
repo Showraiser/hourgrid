@@ -45,7 +45,7 @@ def cloud_index(ghi: pd.Series) -> pd.Series:
 
 def smooth_hourly(s: pd.Series) -> pd.Series:
     """What a day-ahead hourly forecast 'sees': hourly means, no 15-min variability."""
-    return s.groupby(s.index.floor("h")).transform("mean")
+    return s.groupby(s.index.tz_convert("UTC").floor("h")).transform("mean")
 
 
 def ar1_noise(n: int, rng: np.random.Generator, phi: float = 0.85, sigma: float = 0.06) -> np.ndarray:
