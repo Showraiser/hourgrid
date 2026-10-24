@@ -91,7 +91,9 @@ def _ec_prices(start: datetime, end: datetime) -> pd.Series:
     j = r.json()
     idx = pd.to_datetime(j["unix_seconds"], unit="s", utc=True).tz_convert("Europe/Berlin")
     s = pd.Series([float("nan") if v is None else float(v) * 1000 for v in j["price"]], index=idx).dropna()
-    return s.groupby(s.index.floor("h")).mean()  # 15-min products -> hourly
+    g = s.groupby(s.index.tz_convert("UTC").floor("h")).mean()
+    g.index = g.index.tz_convert("Europe/Berlin")
+    return g
 
 
 def _ec_intensity() -> tuple[float, str]:
