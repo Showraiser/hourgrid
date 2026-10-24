@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
+from .timeutil import floor_local
 from eth_abi import encode
 from eth_utils import keccak
 
@@ -39,7 +40,7 @@ def interval_id(ts: pd.Timestamp) -> int:
 
 
 def local_hour_start(ts: pd.Timestamp) -> int:
-    return int(ts.floor("h").timestamp())
+    return int(floor_local(ts, "h").timestamp())
 
 
 def cert_id_for(meter_key: bytes, hour_start: int) -> str:
@@ -104,7 +105,7 @@ class Engine:
             self.oracle.fit(self.homes, self.profiles, self.day_start)
             self.battery: BatteryState = new_battery()
             if settings.clock_mode == "live":
-                self.clock = now.floor("15min") - pd.Timedelta(minutes=15)
+                self.clock = floor_local(now, "15min") - pd.Timedelta(minutes=15)
             else:
                 self.clock = self.day_start + pd.Timedelta(hours=settings.demo_start_hour)
             self.end = w.index[-1]
@@ -341,7 +342,7 @@ class Engine:
     def _ref_price(self, t: pd.Timestamp) -> int | None:
         if self.ref_prices is None or not len(self.ref_prices):
             return None
-        v = self.ref_prices.get(t.floor("h"))
+        v = self.ref_prices.get(floor_local(t, "h"))
         return None if v is None or pd.isna(v) else int(v)
 
     def _persist(self, t, iv, period, gp, lo, hi, poa, res, orders, delivered, readings, sigs, fc, ob_hash, root, bal):

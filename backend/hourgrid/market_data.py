@@ -19,6 +19,7 @@ import time
 from datetime import datetime, timedelta
 
 import pandas as pd
+from .timeutil import floor_local
 import requests
 
 from .countries import Profile
@@ -91,9 +92,7 @@ def _ec_prices(start: datetime, end: datetime) -> pd.Series:
     j = r.json()
     idx = pd.to_datetime(j["unix_seconds"], unit="s", utc=True).tz_convert("Europe/Berlin")
     s = pd.Series([float("nan") if v is None else float(v) * 1000 for v in j["price"]], index=idx).dropna()
-    g = s.groupby(s.index.tz_convert("UTC").floor("h")).mean()
-    g.index = g.index.tz_convert("Europe/Berlin")
-    return g
+    return s.groupby(floor_local(s.index, "h")).mean()  # 15-min products -> hourly
 
 
 def _ec_intensity() -> tuple[float, str]:

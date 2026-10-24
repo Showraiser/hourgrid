@@ -1,6 +1,7 @@
 """PV physics with pvlib: clear-sky irradiance, plane-of-array irradiance, AC output per kWp."""
 import numpy as np
 import pandas as pd
+from .timeutil import floor_local
 import pvlib
 
 from .config import settings
@@ -45,7 +46,7 @@ def cloud_index(ghi: pd.Series) -> pd.Series:
 
 def smooth_hourly(s: pd.Series) -> pd.Series:
     """What a day-ahead hourly forecast 'sees': hourly means, no 15-min variability."""
-    return s.groupby(s.index.tz_convert("UTC").floor("h")).transform("mean")
+    return s.groupby(floor_local(s.index, "h")).transform("mean")
 
 
 def ar1_noise(n: int, rng: np.random.Generator, phi: float = 0.85, sigma: float = 0.06) -> np.ndarray:

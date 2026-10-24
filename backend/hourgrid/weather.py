@@ -18,6 +18,7 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
+from .timeutil import floor_local
 import requests
 
 from . import solar
@@ -154,7 +155,7 @@ def get_weather(force: bool = False) -> WeatherBundle:
 
         w = _to_15min(df)
         if current is None:
-            row = w.iloc[w.index.get_indexer([pd.Timestamp(now).floor("15min")], method="nearest")[0]]
+            row = w.iloc[w.index.get_indexer([floor_local(pd.Timestamp(now), "15min")], method="nearest")[0]]
             current = {"time": now.isoformat(), "temp_air": round(float(row.temp_air), 1),
                        "ghi": round(float(row.ghi)), "cloud_cover": round(float(row.cloud_cover)),
                        "is_day": int(row.ghi > 5), "weather_code": None}

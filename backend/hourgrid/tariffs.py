@@ -12,6 +12,7 @@ import os
 from datetime import datetime
 
 import pandas as pd
+from .timeutil import floor_local
 
 from .countries import Profile, get
 
@@ -53,7 +54,7 @@ def set_dynamic_prices(hourly_wholesale: pd.Series | None) -> None:
         return
     adder = int(PROFILE.dynamic_retail_adder * UNIT)
     for ts, v in hourly_wholesale.items():
-        _dynamic[pd.Timestamp(ts).floor("h")] = max(int(v) + adder, int(0.05 * UNIT))
+        _dynamic[floor_local(pd.Timestamp(ts), "h")] = max(int(v) + adder, int(0.05 * UNIT))
 
 
 def _period(ts: datetime):
@@ -74,7 +75,7 @@ def period_label(ts: datetime) -> str:
 
 def grid_price(ts: datetime) -> int:
     if _dynamic:
-        v = _dynamic.get(pd.Timestamp(ts).floor("h"))
+        v = _dynamic.get(floor_local(pd.Timestamp(ts), "h"))
         if v is not None:
             return v
     return _period(ts)[4]
