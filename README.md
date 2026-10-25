@@ -24,6 +24,8 @@ India's real P2P solar pilots (Delhi, Uttar Pradesh) proved the ledger works, bu
 - **Fraud-resistant by design.** Meters sign readings (EIP-712), a physics oracle rejects physically impossible exports using independent irradiance data, and the contracts re-check everything on-chain.
 - **Microgrid coordination.** A community battery soaks up the midday surplus and sells it into the evening peak.
 
+## Website Link: http://hourgrid.aalingbabu.workers.dev
+
 ---
 
 ## What's in the box
