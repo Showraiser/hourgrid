@@ -26,8 +26,6 @@ India's real P2P solar pilots (Delhi, Uttar Pradesh) proved the ledger works, bu
 
 ## Website Link: http://hourgrid.aalingbabu.workers.dev
 
----
-
 ## What's in the box
 
 ```
